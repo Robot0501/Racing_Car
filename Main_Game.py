@@ -1,4 +1,5 @@
 import pygame as pg
+import time
 
 pg.init()
 
@@ -23,6 +24,25 @@ startPosY = (display_height * 0.5)
 
 def car(x,y):
     gameDisplay.blit(carImg, (x,y) )
+
+def text_objects(text, font):
+    textSurface = font.render(text, True, black)
+    return textSurface, textSurface.get_rect()
+
+def message_display(text):
+    largeText = pg.font.Font("FreeSansBold.ttf",115)
+    TextSurf, TextRect = text_objects(text, largeText)
+    TextRect.center = ((display_width/2), (display_height/2))
+    gameDisplay.blit(TextSurf, TextRect)
+
+    pg.display.update()
+
+    time.sleep(2)
+
+    game_loop()
+
+def crash():
+    message_display("You Crashed")
 
 def game_loop():
     x = startPosX
@@ -74,8 +94,7 @@ def game_loop():
 
         # Car Boundary
         if x > display_width - car_width or x<0 or y > display_height or y<0:
-            x = startPosX
-            y = startPosY
+            crash()
         
         # Update display & tick clock 60 frames forward
         pg.display.update()
